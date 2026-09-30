@@ -1,0 +1,165 @@
+{
+  "appid": 9101,
+  "appname": "ztdh-community",
+  "apptitle": "守赚开放平台·社区版",
+  "apptype": "Tools",
+  "appTypeCN": "实用工具",
+  "appversion": [
+    {
+      "m_version": "1.0.2",
+      "s_version": []
+    }
+  ],
+  "appdesc": "可自托管基础框架，内置能力市场，须联网激活，按需安装扩展。",
+  "appstatus": 1,
+  "home": "https://install-site.zrlmeng.com",
+  "help": "https://docs.zrlmeng.com/community/",
+  "updateat": 1759204800,
+  "reuse": true,
+  "cpu": 2,
+  "mem": 4096,
+  "disk": 20480,
+  "depend": null,
+  "field": [
+    {
+      "attr": "domain",
+      "name": "域名",
+      "type": "textarea",
+      "default": "",
+      "suffix": "可选；安装后在网站反向代理绑定",
+      "unit": ""
+    },
+    {
+      "attr": "allow_access",
+      "name": "允许外部访问",
+      "type": "checkbox",
+      "default": true,
+      "suffix": "允许主机IP+端口访问；云服务器请放行安全组",
+      "unit": ""
+    },
+    {
+      "attr": "cpus",
+      "name": "cpu核心数限制",
+      "type": "number",
+      "default": 0,
+      "suffix": "0为不限制",
+      "unit": ""
+    },
+    {
+      "attr": "memory_limit",
+      "name": "内存限制",
+      "type": "number",
+      "default": 0,
+      "suffix": "0为不限制，单位MB；建议≥4096",
+      "unit": ""
+    },
+    {
+      "attr": "app_port",
+      "name": "应用端口",
+      "type": "number",
+      "default": 8080,
+      "suffix": "宿主机映射端口",
+      "unit": ""
+    },
+    {
+      "attr": "mysql_port",
+      "name": "MySQL端口",
+      "type": "number",
+      "default": 3307,
+      "suffix": "宿主机映射，避免与本机3306冲突",
+      "unit": ""
+    },
+    {
+      "attr": "redis_port",
+      "name": "Redis端口",
+      "type": "number",
+      "default": 6380,
+      "suffix": "宿主机映射，避免与本机6379冲突",
+      "unit": ""
+    },
+    {
+      "attr": "mysql_password",
+      "name": "MySQL密码",
+      "type": "password",
+      "default": "",
+      "suffix": "必填；请使用强密码",
+      "unit": ""
+    }
+  ],
+  "env": [
+    {
+      "key": "app_path",
+      "type": "path",
+      "default": null,
+      "desc": "应用数据目录"
+    },
+    {
+      "key": "host_ip",
+      "type": "string",
+      "default": null,
+      "desc": "主机IP"
+    },
+    {
+      "key": "cpus",
+      "type": "number",
+      "default": null,
+      "desc": "CPU核心数限制"
+    },
+    {
+      "key": "memory_limit",
+      "type": "number",
+      "default": null,
+      "desc": "内存大小限制"
+    },
+    {
+      "key": "app_port",
+      "type": "port",
+      "default": 8080,
+      "desc": "应用端口"
+    },
+    {
+      "key": "mysql_port",
+      "type": "port",
+      "default": 3307,
+      "desc": "MySQL端口"
+    },
+    {
+      "key": "redis_port",
+      "type": "port",
+      "default": 6380,
+      "desc": "Redis端口"
+    },
+    {
+      "key": "mysql_password",
+      "type": "password",
+      "default": null,
+      "desc": "MySQL root密码"
+    },
+    {
+      "key": "app_image_tag",
+      "type": "string",
+      "default": "1.0.2",
+      "desc": "Docker Hub enc镜像tag"
+    },
+    {
+      "key": "claim_base_url",
+      "type": "url",
+      "default": "https://install.zrlmeng.com",
+      "desc": "License领取控制面"
+    }
+  ],
+  "volumes": {
+    "data": {
+      "type": "path",
+      "desc": "应用数据"
+    },
+    "mysql": {
+      "type": "path",
+      "desc": "MySQL数据"
+    },
+    "redis": {
+      "type": "path",
+      "desc": "Redis数据"
+    }
+  }
+}

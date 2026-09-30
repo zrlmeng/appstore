@@ -1,0 +1,90 @@
+# Baota Docker App Store · community edition (enc runtime image ONLY).
+# No business source trees. Image: Docker Hub public enc tag.
+# Template: https://github.com/helloxz/appstore/blob/main/template.md
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB:-ruoyi-vue-pro}
+    ports:
+      - ${HOST_IP}:${MYSQL_PORT:-3307}:3306
+    volumes:
+      - ${APP_PATH}/mysql:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    labels:
+      createdBy: "bt_apps"
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPUS}
+          memory: ${MEMORY_LIMIT}
+
+  redis:
+    image: redis:7.2
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - ${HOST_IP}:${REDIS_PORT:-6380}:6379
+    volumes:
+      - ${APP_PATH}/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    labels:
+      createdBy: "bt_apps"
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPUS}
+          memory: ${MEMORY_LIMIT}
+
+  app:
+    # Public enc runtime only — never mount host source trees.
+    image: zhitongdaohe/shouzhuan-community:${APP_IMAGE_TAG:-1.0.2}
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL: jdbc:mysql://mysql:3306/${MYSQL_DB:-ruoyi-vue-pro}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true&connectionCollation=utf8mb4_unicode_ci
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME: root
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_DATABASE: ${REDIS_DB:-2}
+      YUDAO_LICENSE_RUNTIME_EDITION: install
+      YUDAO_LICENSE_RUNTIME_ONLINE_REQUIRED: "true"
+      YUDAO_LICENSE_RUNTIME_OFFLINE_GRACE_HOURS: "0"
+      YUDAO_INSTALL_WEB_ENABLED: "true"
+      YUDAO_INSTALL_CLAIM_BASE_URL: ${CLAIM_BASE_URL:-https://install.zrlmeng.com}
+    ports:
+      - ${HOST_IP}:${APP_PORT:-8080}:48080
+    volumes:
+      - ${APP_PATH}/data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:48080/actuator/health | grep -q 'UP' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+    labels:
+      createdBy: "bt_apps"
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPUS}
+          memory: ${MEMORY_LIMIT}
