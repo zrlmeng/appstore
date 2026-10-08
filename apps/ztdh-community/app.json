@@ -6,7 +6,7 @@
   "appTypeCN": "实用工具",
   "appversion": [
     {
-      "m_version": "1.0.2",
+      "m_version": "1.0.3",
       "s_version": []
     }
   ],
@@ -138,7 +138,7 @@
     {
       "key": "app_image_tag",
       "type": "string",
-      "default": "1.0.2",
+      "default": "1.0.3",
       "desc": "Docker Hub enc镜像tag"
     },
     {
