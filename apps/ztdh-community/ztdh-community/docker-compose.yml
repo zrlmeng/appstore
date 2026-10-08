@@ -52,7 +52,7 @@ services:
 
   app:
     # Public enc runtime only — never mount host source trees.
-    image: zhitongdaohe/shouzhuan-community:${APP_IMAGE_TAG:-1.0.3}
+    image: zhitongdaohe/shouzhuan-community:${APP_IMAGE_TAG:-1.0.4}
     restart: always
     depends_on:
       mysql:
@@ -60,7 +60,8 @@ services:
       redis:
         condition: service_healthy
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      # local profile = Day1 developer install (keys/schema soft-fail); prod needs full CI secrets.
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
       SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL: jdbc:mysql://mysql:3306/${MYSQL_DB:-ruoyi-vue-pro}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true&connectionCollation=utf8mb4_unicode_ci
       SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME: root
       SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD: ${MYSQL_PASSWORD}
@@ -71,6 +72,8 @@ services:
       YUDAO_LICENSE_RUNTIME_ONLINE_REQUIRED: "true"
       YUDAO_LICENSE_RUNTIME_OFFLINE_GRACE_HOURS: "0"
       YUDAO_INSTALL_WEB_ENABLED: "true"
+      # Persist lock on volume (default user.dir lock is lost on recreate)
+      YUDAO_INSTALL_LOCK_PATH: /data/upload/install.lock
       # Community plane FINAL → install/open on internal 190 (docs/164 v1.2; never commercial 210)
       YUDAO_INSTALL_CLAIM_BASE_URL: ${CLAIM_BASE_URL:-https://install.zrlmeng.com}
       YUDAO_LICENSE_CONTROL_PLANE_BASE_URL: ${CONTROL_PLANE_BASE_URL:-https://install.zrlmeng.com}
@@ -79,6 +82,8 @@ services:
       - ${HOST_IP}:${APP_PORT:-8080}:48080
     volumes:
       - ${APP_PATH}/data:/data
+      # Hotfix wizard HTML without rebuild (optional host file)
+      - ${APP_PATH}/overlay:/overlay
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:48080/actuator/health | grep -q 'UP' || exit 1"]
       interval: 10s

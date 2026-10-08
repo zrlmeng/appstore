@@ -6,7 +6,7 @@
   "appTypeCN": "实用工具",
   "appversion": [
     {
-      "m_version": "1.0.3",
+      "m_version": "1.0.4",
       "s_version": []
     }
   ],
@@ -14,7 +14,7 @@
   "appstatus": 1,
   "home": "https://install-site.zrlmeng.com",
   "help": "https://docs.zrlmeng.com/community/",
-  "updateat": 1759204800,
+  "updateat": 1760000000,
   "reuse": true,
   "cpu": 2,
   "mem": 4096,
@@ -138,7 +138,7 @@
     {
       "key": "app_image_tag",
       "type": "string",
-      "default": "1.0.3",
+      "default": "1.0.4",
       "desc": "Docker Hub enc镜像tag"
     },
     {
