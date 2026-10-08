@@ -1,6 +1,6 @@
-﻿## Summary
+## Summary
 - Add Docker App Store entry for 守赚开放平台·社区版 (`ztdh-community`)
-- Runtime: public **enc** image only `zhitongdaohe/shouzhuan-community:1.0.2` (no business source in this pack)
+- Runtime: public **enc** image only `zhitongdaohe/shouzhuan-community:1.0.3` (no business source in this pack)
 - License: online activation required (`YUDAO_LICENSE_RUNTIME_ONLINE_REQUIRED=true`)
 - Compose follows baota `bt_apps` labels + HOST_IP / APP_PATH conventions
 
@@ -15,4 +15,3 @@
 - [ ] Open `/install` wizard
 - [ ] Confirm online license activation is required
 - [ ] Confirm pack contains no `.java`/`.kt` source trees
-
