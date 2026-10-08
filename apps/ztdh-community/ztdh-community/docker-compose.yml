@@ -52,7 +52,7 @@ services:
 
   app:
     # Public enc runtime only — never mount host source trees.
-    image: zhitongdaohe/shouzhuan-community:${APP_IMAGE_TAG:-1.0.2}
+    image: zhitongdaohe/shouzhuan-community:${APP_IMAGE_TAG:-1.0.3}
     restart: always
     depends_on:
       mysql:
@@ -71,6 +71,7 @@ services:
       YUDAO_LICENSE_RUNTIME_ONLINE_REQUIRED: "true"
       YUDAO_LICENSE_RUNTIME_OFFLINE_GRACE_HOURS: "0"
       YUDAO_INSTALL_WEB_ENABLED: "true"
+      # Community plane FINAL → install.zrlmeng.com on internal 190 (docs/164 v1.2; never commercial 210)
       YUDAO_INSTALL_CLAIM_BASE_URL: ${CLAIM_BASE_URL:-https://install.zrlmeng.com}
     ports:
       - ${HOST_IP}:${APP_PORT:-8080}:48080
